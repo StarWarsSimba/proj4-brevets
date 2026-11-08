@@ -69,20 +69,18 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
    if check_dist_km > 0:
       if check_dist_km < 60:
          hours = (check_dist_km / 20) + 1
-      if check_dist_km < 200:
-         hours = check_dist_km / 15
       elif check_dist_km == 200:
          hours = 13.5
-      elif check_dist_km < 400:
-         hours = check_dist_km / 15
       elif check_dist_km == 400:
          hours = 27
-      elif check_dist_km < 600:
-         hours = check_dist_km / 15
-      elif check_dist_km < 1000:
-         hours = check_dist_km / 11.428
       else:
-         hours = check_dist_km / 13.333
+         hours = min(check_dist_km, 200) / 15
+         if check_dist_km > 200:
+            hours += min(check_dist_km - 200, 200) / 15
+         if check_dist_km > 400:
+            hours += min(check_dist_km - 400, 200) / 15
+         if check_dist_km > 600:
+            hours += min(check_dist_km - 600, 400) / 11.428
    else:
          raise ValueError("Invalid control distance")
    return arrow.get(brevet_start_time).shift(minutes = round(hours * 60)).isoformat()
@@ -90,6 +88,7 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
 def main(argv):
    if len(argv) == 4:
       print(open_time(int(argv[1]), int(argv[2]), argv[3]))
+      print(close_time(int(argv[1]), int(argv[2]), argv[3]))
 
 if __name__ == "__main__":
    main(sys.argv)
