@@ -69,9 +69,9 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
    if check_dist_km > 0:
       if check_dist_km < 60:
          hours = (check_dist_km / 20) + 1
-      elif check_dist_km == 200:
+      elif check_dist_km == 200 and brevet_dist_km == 200:
          hours = 13.5
-      elif check_dist_km == 400:
+      elif check_dist_km == 400 and brevet_dist_km == 400:
          hours = 27
       else:
          hours = min(check_dist_km, 200) / 15
